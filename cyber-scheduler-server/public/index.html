@@ -1,0 +1,33 @@
+<!-- Add this to your style section for a live moving background -->
+<style>
+    body {
+        background: url('https://motionbgs.com') no-repeat center center fixed;
+        background-size: cover;
+    }
+    #tanjiro-assistant {
+        position: fixed; bottom: 10px; right: 10px; width: 200px;
+        transition: transform 0.3s ease; z-index: 1000;
+    }
+    .chat-bubble {
+        position: absolute; top: -50px; right: 20px; background: rgba(0,0,0,0.8);
+        color: #fff; padding: 5px 10px; border-radius: 10px; border: 1px solid #ef4444;
+        font-size: 12px; display: none;
+    }
+</style>
+
+<!-- Add this inside your <body> -->
+<div id="tanjiro-assistant">
+    <div class="chat-bubble" id="tanjiro-speech">"Set your heart ablaze!"</div>
+    <img src="https://giphy.com" width="100%">
+</div>
+
+<script>
+    // Make Tanjiro talk when you click Compile
+    function buildMatrix() {
+        const speech = document.getElementById('tanjiro-speech');
+        speech.style.display = 'block';
+        setTimeout(() => { speech.style.display = 'none'; }, 3000);
+        
+        // ... rest of your buildMatrix logic
+    }
+</script>
