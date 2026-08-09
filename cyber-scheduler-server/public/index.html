@@ -1,33 +1,258 @@
-<!-- Add this to your style section for a live moving background -->
-<style>
-    body {
-        background: url('https://motionbgs.com') no-repeat center center fixed;
-        background-size: cover;
-    }
-    #tanjiro-assistant {
-        position: fixed; bottom: 10px; right: 10px; width: 200px;
-        transition: transform 0.3s ease; z-index: 1000;
-    }
-    .chat-bubble {
-        position: absolute; top: -50px; right: 20px; background: rgba(0,0,0,0.8);
-        color: #fff; padding: 5px 10px; border-radius: 10px; border: 1px solid #ef4444;
-        font-size: 12px; display: none;
-    }
-</style>
-
-<!-- Add this inside your <body> -->
-<div id="tanjiro-assistant">
-    <div class="chat-bubble" id="tanjiro-speech">"Set your heart ablaze!"</div>
-    <img src="https://giphy.com" width="100%">
-</div>
-
-<script>
-    // Make Tanjiro talk when you click Compile
-    function buildMatrix() {
-        const speech = document.getElementById('tanjiro-speech');
-        speech.style.display = 'block';
-        setTimeout(() => { speech.style.display = 'none'; }, 3000);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHITE_ROOM_OPERATIONS_v5.0</title>
+    <style>
+        /* Self-Contained Custom UI Styling (Requires NO External Internet Files to Load) */
+        html, body {
+            margin: 0; 
+            padding: 20px;
+            background-color: #06070a !important;
+            color: #d1d5db !important; 
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
         
-        // ... rest of your buildMatrix logic
-    }
-</script>
+        .hud-container { 
+            background: linear-gradient(145deg, #0d0f14, #12161f); 
+            border: 2px solid #ef4444; 
+            padding: 30px; 
+            border-radius: 10px; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+        }
+        
+        .title-bar {
+            border-bottom: 2px solid #ef4444;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title { 
+            color: #ef4444; 
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6); 
+            margin: 0;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        .ledger-box { 
+            background: #030406;
+            border: 1px solid #34d399; 
+            padding: 10px 25px; 
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .ledger-label {
+            font-size: 10px;
+            color: #71717a;
+            display: block;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .ledger-points {
+            color: #34d399; 
+            font-size: 28px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+        }
+        
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .panel {
+            background: #030406;
+            border: 1px solid #27272a;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #f87171;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1f1f23;
+            padding-bottom: 8px;
+        }
+        
+        .cyber-input { 
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px; 
+            background: #06070a;
+            border: 1px solid #27272a;
+            color: #ffffff;
+            font-family: inherit;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .cyber-input:focus {
+            border-color: #ef4444;
+            outline: none;
+        }
+
+        .action-btn { 
+            width: 100%;
+            background: linear-gradient(135deg, #ef4444, #991b1b); 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        .action-btn:hover {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+        
+        .timeline-card {
+            background: #0d0f14;
+            border: 1px solid #1f1f23;
+            border-left: 3px solid #34d399;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exe-btn {
+            background: #064e3b;
+            border: 1px solid #065f46;
+            color: #34d399;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 3px;
+        }
+
+        .exe-btn:disabled {
+            background: #18181b;
+            border-color: #27272a;
+            color: #52525b;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hud-container">
+        <header class="title-bar">
+            <div>
+                <h1 class="title">WHITE_ROOM_PROTOCOL_5.0</h1>
+                <div style="font-size: 10px; color: #52525b; margin-top: 4px; font-weight: bold;">SITUATIONAL ASSESSMENT MATRIX // STABLE</div>
+            </div>
+            <div class="ledger-box">
+                <span class="ledger-label">TACTICAL LEDGER</span>
+                <div id="pts" class="ledger-points">0</div>
+            </div>
+        </header>
+        
+        <div class="dashboard-layout">
+            <!-- Left Side Control Panel -->
+            <section class="panel">
+                <h2 class="panel-title">// Operational Inputs</h2>
+                <label style="font-size: 11px; color: #a1a1aa; display: block; margin-bottom: 6px;">CORE SUBJECT TARGET</label>
+                <input id="sub" type="text" placeholder="Physics, Math, Chemistry..." class="cyber-input">
+                
+                <label style="font-size: 11px; color: #a1a1aa; display: block; margin-bottom: 6px;">MATRIX DURATION (BLOCKS)</label>
+                <input id="hrs" type="number" value="4" min="1" max="12" class="cyber-input">
+                
+                <button class="action-btn" onclick="compile()">Compile Vector Matrix</button>
+            </section>
+            
+            <!-- Right Side Live Matrix Output -->
+            <section class="panel" style="border-left-color: #a1a1aa;">
+                <h2 class="panel-title">// Chrono Timeline</h2>
+                <div id="timeline">
+                    <div style="font-size: 12px; color: #52525b; text-align: center; padding: 40px 0; font-style: italic;">System idle. Deploy data parameters to initialize matrix.</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Synchronize interface values with Render Server Storage memory
+        async function sync() {
+            try {
+                const res = await fetch('/api/profile');
+                const data = await res.json();
+                document.getElementById('pts').innerText = data.points;
+            } catch (err) {
+                console.error("[SYSTEM ERROR] Failed data packet synchronization:", err);
+            }
+        }
+
+        // Build distinct study blocks dynamically inside the timeline stream
+        function compile() {
+            const subjectInput = document.getElementById('sub').value.trim() || "Syllabus Grind";
+            const blockCount = parseInt(document.getElementById('hrs').value) || 4;
+            let htmlOutput = '';
+            
+            for (let i = 0; i < blockCount; i++) {
+                htmlOutput += `
+                    <div class="timeline-card">
+                        <div>
+                            <span style="font-size: 13px; font-weight: bold; display: block;">${subjectInput}</span>
+                            <span style="font-size: 10px; color: #71717a;">Module segment [B-${i+1}]</span>
+                        </div>
+                        <button class="exe-btn" onclick="executeBlock(this)">EXECUTE</button>
+                    </div>
+                `;
+            }
+            document.getElementById('timeline').innerHTML = htmlOutput;
+        }
+
+        // Send point addition instructions securely to Node backend routes
+        async function executeBlock(buttonElement) {
+            try {
+                const res = await fetch('/api/complete-session', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('pts').innerText = data.newPoints;
+                    buttonElement.innerText = "DONE"; 
+                    buttonElement.disabled = true;
+                }
+            } catch (err) {
+                alert("Network communication dropped. Unable to save matrix point logs.");
+            }
+        }
+
+        // Fire initialization sequence on DOM completion
+        window.onload = sync;
+    </script>
+</body>
+</html>
