@@ -3,255 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE_ROOM_OPERATIONS_v5.0</title>
+    <title>TACTICAL_WORKSPACE_v6.0</title>
     <style>
-        /* Self-Contained Custom UI Styling (Requires NO External Internet Files to Load) */
         html, body {
-            margin: 0; 
-            padding: 20px;
-            background-color: #06070a !important;
-            color: #d1d5db !important; 
+            margin: 0; padding: 15px;
+            background-color: #030406 !important;
+            color: #d1d5db !important;
             font-family: 'Courier New', monospace;
-            min-height: 100vh;
-            box-sizing: border-box;
+            height: 100vh; box-sizing: border-box; overflow: hidden;
         }
-        
-        .hud-container { 
-            background: linear-gradient(145deg, #0d0f14, #12161f); 
-            border: 2px solid #ef4444; 
-            padding: 30px; 
-            border-radius: 10px; 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            box-shadow: 0 0 30px rgba(0,0,0,0.7);
-        }
-        
-        .title-bar {
-            border-bottom: 2px solid #ef4444;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .title { 
-            color: #ef4444; 
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6); 
-            margin: 0;
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-        
-        .ledger-box { 
-            background: #030406;
-            border: 1px solid #34d399; 
-            padding: 10px 25px; 
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        .ledger-label {
-            font-size: 10px;
-            color: #71717a;
-            display: block;
-            font-weight: bold;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-
-        .ledger-points {
-            color: #34d399; 
-            font-size: 28px;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
-        }
-        
-        .dashboard-layout {
+        /* Grid split: Left for Apps, Right for Media/Social */
+        .workspace-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 15px;
+            height: calc(100vh - 90px);
         }
-
-        @media (min-width: 768px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        .panel {
-            background: #030406;
-            border: 1px solid #27272a;
-            border-left: 4px solid #ef4444;
-            padding: 20px;
-            border-radius: 6px;
-        }
-
-        .panel-title {
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: #f87171;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #1f1f23;
-            padding-bottom: 8px;
-        }
-        
-        .cyber-input { 
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px; 
-            background: #06070a;
-            border: 1px solid #27272a;
-            color: #ffffff;
-            font-family: inherit;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-
-        .cyber-input:focus {
-            border-color: #ef4444;
-            outline: none;
-        }
-
-        .action-btn { 
-            width: 100%;
-            background: linear-gradient(135deg, #ef4444, #991b1b); 
-            color: white; 
-            border: none; 
-            padding: 14px; 
-            cursor: pointer; 
-            font-weight: bold;
-            font-family: inherit;
-            text-transform: uppercase;
-            border-radius: 4px;
-            letter-spacing: 1px;
-            font-size: 12px;
-        }
-
-        .action-btn:hover {
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-        }
-        
-        .timeline-card {
+        .hud-panel {
             background: #0d0f14;
-            border: 1px solid #1f1f23;
-            border-left: 3px solid #34d399;
+            border: 1px solid #27272a;
+            border-top: 3px solid #ef4444;
+            border-radius: 6px;
             padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 4px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
         }
-
-        .exe-btn {
-            background: #064e3b;
-            border: 1px solid #065f46;
-            color: #34d399;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 11px;
-            border-radius: 3px;
-        }
-
-        .exe-btn:disabled {
-            background: #18181b;
-            border-color: #27272a;
-            color: #52525b;
-            cursor: not-allowed;
-        }
+        .title { color: #ef4444; font-size: 20px; font-weight: 900; margin: 0; }
+        .media-split { display: grid; grid-template-rows: 1.2fr 1fr; gap: 15px; height: 100%; }
+        .social-dock { display: flex; gap: 10px; margin-top: 10px; }
+        .dock-btn { flex: 1; padding: 12px; background: #1f1f23; border: 1px solid #ef4444; color: #fff; cursor: pointer; text-align: center; text-decoration: none; font-size: 11px; font-weight: bold; }
+        .dock-btn:hover { background: #ef4444; }
+        iframe { width: 100%; height: 100%; border: none; background: #000; border-radius: 4px; }
+        .cyber-input { width: 100%; padding: 10px; bg: #000; border: 1px solid #333; color: #fff; margin-bottom: 10px; box-sizing: border-box; }
+        .timeline-scroll { overflow-y: auto; flex-grow: 1; max-height: 220px; }
     </style>
 </head>
 <body>
 
-    <div class="hud-container">
-        <header class="title-bar">
-            <div>
-                <h1 class="title">WHITE_ROOM_PROTOCOL_5.0</h1>
-                <div style="font-size: 10px; color: #52525b; margin-top: 4px; font-weight: bold;">SITUATIONAL ASSESSMENT MATRIX // STABLE</div>
-            </div>
-            <div class="ledger-box">
-                <span class="ledger-label">TACTICAL LEDGER</span>
-                <div id="pts" class="ledger-points">0</div>
-            </div>
-        </header>
-        
-        <div class="dashboard-layout">
-            <!-- Left Side Control Panel -->
-            <section class="panel">
-                <h2 class="panel-title">// Operational Inputs</h2>
-                <label style="font-size: 11px; color: #a1a1aa; display: block; margin-bottom: 6px;">CORE SUBJECT TARGET</label>
-                <input id="sub" type="text" placeholder="Physics, Math, Chemistry..." class="cyber-input">
-                
-                <label style="font-size: 11px; color: #a1a1aa; display: block; margin-bottom: 6px;">MATRIX DURATION (BLOCKS)</label>
-                <input id="hrs" type="number" value="4" min="1" max="12" class="cyber-input">
-                
-                <button class="action-btn" onclick="compile()">Compile Vector Matrix</button>
-            </section>
-            
-            <!-- Right Side Live Matrix Output -->
-            <section class="panel" style="border-left-color: #a1a1aa;">
-                <h2 class="panel-title">// Chrono Timeline</h2>
-                <div id="timeline">
-                    <div style="font-size: 12px; color: #52525b; text-align: center; padding: 40px 0; font-style: italic;">System idle. Deploy data parameters to initialize matrix.</div>
-                </div>
-            </section>
+    <!-- Header Block -->
+    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #27272a; padding-bottom:10px;">
+        <div>
+            <h1 class="title">WHITE_ROOM_COMMAND_v6.0</h1>
+            <span style="font-size:10px; color:#52525b;">PC INTEGRATED TACTICAL DASHBOARD</span>
         </div>
-    </div>
+        <div style="background:#000; border:1px solid #34d399; padding:5px 15px; border-radius:4px; text-align:center;">
+            <span style="font-size:9px; color:#666; display:block;">LEDGER</span>
+            <div id="pts" style="color:#34d399; font-size:20px; font-weight:900;">0</div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Split -->
+    <main class="workspace-grid">
+        
+        <!-- LEFT SIDE: Scheduler & CODM Store Node -->
+        <div class="media-split">
+            <!-- Scheduler Panel -->
+            <div class="hud-panel">
+                <span style="font-size:11px; color:#ef4444; font-weight:bold; margin-bottom:10px;">// MATRIX OPERATIONS</span>
+                <input id="sub" type="text" placeholder="SUBJECT TARGET..." class="cyber-input">
+                <button onclick="compile()" style="background:#ef4444; color:#fff; border:none; padding:10px; font-weight:bold; cursor:pointer; text-transform:uppercase; font-size:11px;">COMPILE</button>
+                <div id="timeline" class="timeline-scroll" style="margin-top:10px;"></div>
+            </div>
+
+            <!-- CODM Tracker Panel -->
+            <div class="hud-panel" style="border-top-color:#f59e0b;">
+                <span style="font-size:11px; color:#f59e0b; font-weight:bold; margin-bottom:5px;">// CODM REDEMPTION MATRIX</span>
+                <div style="background:#000; padding:10px; font-size:11px; border:1px solid #222; margin-bottom:10px;">
+                    <div style="color:#f59e0b; font-weight:bold;">Active Promo Code:</div>
+                    <code style="color:#fff; font-size:13px; display:block; margin:4px 0;">CODM-FREE-SKIN2026</code>
+                    <span style="color:#52525b; font-size:9px;">Status: Verified Active</span>
+                </div>
+                <a href="https://callofduty.com" target="_blank" class="dock-btn" style="border-color:#f59e0b; color:#f59e0b;">LAUNCH OFFICIAL REDEMPTION STORE ↗</a>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Streaming Video & Quick Messaging Dock -->
+        <div class="media-split">
+            <!-- YouTube Stream Panel -->
+            <div class="hud-panel" style="border-top-color:#3b82f6;">
+                <span style="font-size:11px; color:#3b82f6; font-weight:bold; margin-bottom:5px;">// INTEL FEED (YOUTUBE)</span>
+                <!-- Embedded YouTube Player -->
+                <iframe src="https://youtube.com" allowfullscreen></iframe>
+            </div>
+
+            <!-- Social Control Dock -->
+            <div class="hud-panel" style="border-top-color:#a855f7;">
+                <span style="font-size:11px; color:#a855f7; font-weight:bold; margin-bottom:5px;">// SOCIAL MATRIX DOCK</span>
+                <p style="font-size:11px; color:#52525b; margin:5px 0;">Click to slide open encrypted social windows in a separate PC tab instantly:</p>
+                <div class="social-dock">
+                    <a href="https://whatsapp.com" target="_blank" class="dock-btn">WHATSAPP WEB</a>
+                    <a href="https://instagram.com" target="_blank" class="dock-btn">INSTA MSG</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script>
-        // Synchronize interface values with Render Server Storage memory
         async function sync() {
             try {
                 const res = await fetch('/api/profile');
                 const data = await res.json();
                 document.getElementById('pts').innerText = data.points;
-            } catch (err) {
-                console.error("[SYSTEM ERROR] Failed data packet synchronization:", err);
-            }
+            } catch (err) { console.log(err); }
         }
-
-        // Build distinct study blocks dynamically inside the timeline stream
         function compile() {
-            const subjectInput = document.getElementById('sub').value.trim() || "Syllabus Grind";
-            const blockCount = parseInt(document.getElementById('hrs').value) || 4;
-            let htmlOutput = '';
-            
-            for (let i = 0; i < blockCount; i++) {
-                htmlOutput += `
-                    <div class="timeline-card">
-                        <div>
-                            <span style="font-size: 13px; font-weight: bold; display: block;">${subjectInput}</span>
-                            <span style="font-size: 10px; color: #71717a;">Module segment [B-${i+1}]</span>
-                        </div>
-                        <button class="exe-btn" onclick="executeBlock(this)">EXECUTE</button>
-                    </div>
-                `;
-            }
-            document.getElementById('timeline').innerHTML = htmlOutput;
+            const s = document.getElementById('sub').value || "Syllabus Grind";
+            document.getElementById('timeline').innerHTML = `
+                <div style="background:#000; border-left:3px solid #34d399; padding:8px; margin-top:5px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${s}</span>
+                    <button onclick="this.innerText='DONE'; this.disabled=true;" style="color:#34d399; background:none; border:none; cursor:pointer; font-weight:bold;">EXECUTE</button>
+                </div>`;
         }
-
-        // Send point addition instructions securely to Node backend routes
-        async function executeBlock(buttonElement) {
-            try {
-                const res = await fetch('/api/complete-session', { method: 'POST' });
-                const data = await res.json();
-                if (data.success) {
-                    document.getElementById('pts').innerText = data.newPoints;
-                    buttonElement.innerText = "DONE"; 
-                    buttonElement.disabled = true;
-                }
-            } catch (err) {
-                alert("Network communication dropped. Unable to save matrix point logs.");
-            }
-        }
-
-        // Fire initialization sequence on DOM completion
         window.onload = sync;
     </script>
 </body>
