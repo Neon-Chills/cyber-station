@@ -3,157 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE_ROOM_COMMAND_v7.0</title>
+    <title>GURUKUL_PORTAL_v1.0</title>
     <style>
         :root {
-            --accent-color: #ef4444;
-            --accent-glow: rgba(239, 68, 68, 0.2);
+            --gurukul-primary: #1e3a8a; /* Navy Blue Accent */
+            --gurukul-secondary: #f59e0b; /* Marigold/Saffron Alert */
+            --bg-canvas: #f3f4f6; /* Slate Student Canvas */
+            --panel-white: #ffffff;
+            --text-dark: #1f2937;
         }
+
         html, body {
-            margin: 0; padding: 15px;
-            background-color: #050608 !important;
-            color: #d1d5db !important;
-            font-family: 'Courier New', monospace;
+            margin: 0; padding: 0;
+            background-color: var(--bg-canvas) !important;
+            color: var(--text-dark) !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh; box-sizing: border-box; overflow: hidden;
         }
+
+        /* Authentication Overlay Gate */
+        #login-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--gurukul-primary), #3b82f6);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
+        }
+
+        .login-card {
+            background: var(--panel-white); border-radius: 12px; padding: 35px;
+            width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;
+        }
+
+        .login-card h2 { color: var(--gurukul-primary); margin-bottom: 5px; font-size: 24px; font-weight: 800; }
+        .login-card p { color: #6b7280; font-size: 13px; margin-bottom: 25px; }
+
+        /* Unified Workspace Layout */
+        .portal-header {
+            background: var(--gurukul-primary); color: #fff;
+            padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
         .workspace-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 15px;
-            height: calc(100vh - 90px);
+            display: grid; grid-template-columns: 1.11fr 1.3fr; gap: 20px;
+            padding: 20px; height: calc(100vh - 85px); box-sizing: border-box;
         }
+
         .hud-panel {
-            background: #0d1117;
-            border: 1px solid #21262d;
-            border-top: 3px solid var(--accent-color);
-            border-radius: 6px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
+            background: var(--panel-white); border: 1px solid #e5e7eb;
+            border-top: 4px solid var(--gurukul-primary); border-radius: 8px;
+            padding: 20px; display: flex; flex-direction: column; box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .title { color: var(--accent-color); font-size: 22px; font-weight: 900; margin: 0; letter-spacing: 1px; }
-        .media-split { display: grid; grid-template-rows: 1.2fr 1fr; gap: 15px; height: 100%; }
+
+        .media-split { display: grid; grid-template-rows: 1.2fr 1fr; gap: 20px; height: 100%; }
+
+        /* Inputs & Interactive Systems */
         .cyber-input { 
-            width: 100%; padding: 12px; background: #010409; 
-            border: 1px solid #30363d; color: #fff; 
-            margin-bottom: 12px; box-sizing: border-box; font-family: inherit;
+            width: 100%; padding: 12px; background: #f9fafb; 
+            border: 1px solid #d1d5db; color: var(--text-dark); 
+            margin-bottom: 12px; box-sizing: border-box; border-radius: 6px;
+            font-family: inherit; font-size: 14px;
         }
-        .cyber-input:focus { border-color: var(--accent-color); outline: none; }
+        .cyber-input:focus { border-color: var(--gurukul-primary); outline: none; background: #fff; }
+
         .action-btn { 
-            background: var(--accent-color); color: #fff; border: none; padding: 12px; 
-            font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; 
+            background: var(--gurukul-primary); color: #fff; border: none; padding: 12px 20px; 
+            font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; 
+            border-radius: 6px; transition: background 0.2s;
         }
-        .action-btn:hover { background: #991b1b; box-shadow: 0 0 10px var(--accent-color); }
-        .action-btn:disabled { background: #21262d; color: #8b949e; cursor: not-allowed; box-shadow: none; }
-        .timeline-scroll { overflow-y: auto; flex-grow: 1; margin-top: 10px; padding-right: 5px; }
-        .video-container { width: 100%; height: 100%; background: #000; border-radius: 4px; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .social-dock { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .action-btn:hover { background: #1d4ed8; }
+        .action-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
         .dock-btn { 
-            padding: 14px; background: #161b22; border: 1px solid #30363d; 
-            color: #fff; cursor: pointer; text-align: center; text-decoration: none; 
-            font-size: 11px; font-weight: bold; border-radius: 4px;
+            padding: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; 
+            color: var(--gurukul-primary); cursor: pointer; text-align: center; text-decoration: none; 
+            font-size: 12px; font-weight: bold; border-radius: 6px;
         }
-        .dock-btn:hover { border-color: var(--accent-color); background: var(--accent-glow); }
+        .dock-btn:hover { background: #e5e7eb; border-color: var(--gurukul-primary); }
+
         .queue-item {
-            background: #010409; border: 1px solid #30363d;
-            padding: 8px; margin-top: 5px; border-radius: 4px;
+            background: #f9fafb; border: 1px solid #e5e7eb;
+            padding: 10px; margin-top: 8px; border-radius: 6px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 13px;
+        }
+
+        .timeline-scroll { overflow-y: auto; flex-grow: 1; margin-top: 15px; }
+        .timeline-card {
+            background: #f9fafb; border: 1px solid #e5e7eb; 
+            border-left: 4px solid #10b981; padding: 12px; 
+            margin-bottom: 8px; font-size: 13px; 
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 12px;
         }
-        .theme-select {
-            background: #010409; color: #fff; border: 1px solid #30363d;
-            padding: 5px; font-family: inherit; font-size: 11px; border-radius: 4px;
-        }
+
+        .video-container { width: 100%; height: 100%; background: #000; border-radius: 6px; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <!-- HUD Header -->
-    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #21262d; padding-bottom:10px;">
-        <div>
-            <h1 class="title">WHITE_ROOM_COMMAND_v7.0</h1>
-            <span style="font-size:10px; color:#8b949e; font-weight:bold; letter-spacing:1px;">INTEGRATED MULTI-MATRIX ENVIRONMENT</span>
+    <!-- GURUKUL LOGIN SYSTEM SECURITY OVERLAY GATE -->
+    <div id="login-gate">
+        <div class="login-card">
+            <div style="font-size: 40px; margin-bottom: 10px;">🏛️</div>
+            <h2>GURUKUL DIGITAL PORTAL</h2>
+            <p>Please log in using your academic profile credentials</p>
+            <input id="user-id" type="text" placeholder="STUDENT ID / USERNAME (e.g., Ram)" class="cyber-input">
+            <input id="user-pass" type="password" placeholder="SECURE PASSWORD" class="cyber-input">
+            <button onclick="authenticateStudent()" class="action-btn" style="width: 100%; margin-top: 10px;">SIGN IN TO DASHBOARD</button>
         </div>
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <select class="theme-select" onchange="changeTheme(this.value)">
-                <option value="#ef4444">🔴 RED ALERT</option>
-                <option value="#10b981">🟢 CYBER HUNTER</option>
-                <option value="#3b82f6">🔵 DEEP SPACE</option>
-                <option value="#f59e0b">🟡 CODM GOLD ELITE</option>
-            </select>
-            <div style="background:#010409; border:1px solid #34d399; padding:5px 20px; border-radius:4px; text-align:center;">
-                <span style="font-size:9px; color:#8b949e; display:block; font-weight:bold;">LEDGER SCORE</span>
-                <div id="pts" style="color:#34d399; font-size:22px; font-weight:900;">0</div>
-            </div>
+    </div>
+
+    <!-- MAIN STUDENT DASHBOARD ENVIRONMENT -->
+    <header class="portal-header">
+        <div>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px;">🏛️ GURUKUL STUDENT RESOURCE MATRIX</h1>
+            <span id="welcome-banner" style="font-size: 12px; color: #bfdbfe; font-weight: 600;">ACCESS AUTHENTICATED // USER PROFILE</span>
+        </div>
+        <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); padding: 6px 20px; border-radius: 6px; text-align: center;">
+            <span style="font-size: 10px; color: #bfdbfe; display: block; font-weight: bold; text-transform: uppercase;">Ledger Credit Score</span>
+            <div id="pts" style="color: var(--gurukul-secondary); font-size: 22px; font-weight: 900;">0</div>
         </div>
     </header>
 
     <main class="workspace-grid">
         <div class="media-split">
-            <!-- Advanced Multi-Subject System Layout -->
+            <!-- Course Management Matrix List -->
             <div class="hud-panel">
-                <span style="font-size:11px; color:var(--accent-color); font-weight:bold; margin-bottom:10px; letter-spacing:1px;">// MULTI-SUBJECT MATRIX QUEUE</span>
-                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <input id="sub" type="text" placeholder="ADD NEW SUBJECT TARGET..." class="cyber-input" style="margin-bottom:0;">
-                    <button onclick="addSubjectToQueue()" class="action-btn" style="white-space:nowrap;">+ ADD</button>
+                <span style="font-size: 12px; color: var(--gurukul-primary); font-weight: bold; margin-bottom: 12px; text-transform: uppercase;">// Academic Course Tracker Queue</span>
+                <div style="display: flex; gap: 10px; margin-bottom: 5px;">
+                    <input id="sub" type="text" placeholder="ENTER SUBJECT NAME (Math, Physics...)" class="cyber-input" style="margin-bottom:0;">
+                    <button onclick="addSubjectToQueue()" class="action-btn" style="white-space:nowrap;">+ ADD UNIT</button>
                 </div>
                 
-                <!-- Targets List Container -->
                 <div id="subject-queue" style="max-height: 120px; overflow-y: auto; margin-bottom: 10px;"></div>
                 
-                <div style="border-top: 1px dashed #30363d; padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
-                    <span id="active-target-lbl" style="font-size:11px; color:#8b949e;">Active: None Selected</span>
-                    <button id="push-btn" onclick="startStudyGate()" class="action-btn" style="padding: 0 30px; height: 35px;" disabled>PUSH</button>
-                    <div id="timer-display" style="font-weight: bold; color: var(--accent-color);"></div>
+                <div style="border-top: 1px dashed #d1d5db; padding-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                    <span id="active-target-lbl" style="font-size: 12px; color: #6b7280; font-weight: 600;">Target: None Selected</span>
+                    <button id="push-btn" onclick="startStudyGate()" class="action-btn" style="padding: 0 25px; height: 38px;" disabled>START STUDY</button>
+                    <div id="timer-display" style="font-weight: bold; color: var(--gurukul-secondary); font-size: 15px;"></div>
                 </div>
 
                 <div id="timeline" class="timeline-scroll"></div>
             </div>
 
-            <!-- Reward Exchange Matrix -->
-            <div class="hud-panel" style="border-top-color:#f59e0b;">
-                <span style="font-size:11px; color:#f59e0b; font-weight:bold; margin-bottom:5px;">// LEDGER SCORE SHOP / REWARDS</span>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;">
-                    <button onclick="claimReward(100, '1 CODM Match')" class="dock-btn" style="border-color:#f59e0b; color:#fff; font-size:10px;">1 CODM MATCH (100 PTS)</button>
-                    <button onclick="claimReward(200, '30 Min Break')" class="dock-btn" style="border-color:#f59e0b; color:#fff; font-size:10px;">30 MIN BREAK (200 PTS)</button>
+            <!-- Reward Store Section -->
+            <div class="hud-panel" style="border-top-color: var(--gurukul-secondary);">
+                <span style="font-size: 12px; color: var(--gurukul-secondary); font-weight: bold; margin-bottom: 10px; text-transform: uppercase;">// Ledger Score Reward Claims</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 5px;">
+                    <button onclick="claimReward(100, '1 CODM Match')" class="dock-btn" style="border-color: var(--gurukul-secondary);">1 CODM MATCH (100 PTS)</button>
+                    <button onclick="claimReward(200, '30 Min Break')" class="dock-btn" style="border-color: var(--gurukul-secondary);">30 MIN BREAK (200 PTS)</button>
                 </div>
             </div>
         </div>
 
         <div class="media-split">
-            <!-- Fixed YouTube Core Frame Player -->
-            <div class="hud-panel" style="border-top-color:#3b82f6;">
-                <span style="font-size:11px; color:#3b82f6; font-weight:bold; margin-bottom:10px; letter-spacing:1px;">// LIVE VIDEO CORE ENGINE</span>
+            <!-- Security Scaffolded Embed Player -->
+            <div class="hud-panel" style="border-top-color: #3b82f6;">
+                <span style="font-size: 12px; color: #3b82f6; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;">// Live Broadcast Interactive Visual Engine</span>
                 <div class="video-container">
-                   <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-    <source src="https://mixkit.co" type="video/mp4">
-    Your browser engine does not support video playbacks.
-</video>
-
+                    <iframe src="https://youtube.com" title="Gurukul Hub Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
-            <div class="hud-panel" style="border-top-color:#10b981;">
-                <span style="font-size:11px; color:#10b981; font-weight:bold; margin-bottom:10px; letter-spacing:1px;">// MULTI-MATRIX EXTERNAL LINKS</span>
+            <!-- Social Manager Dock Options -->
+            <div class="hud-panel" style="border-top-color: #10b981;">
+                <span style="font-size: 12px; color: #10b981; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;">// Student Resource Gateways</span>
                 <div class="social-dock">
-                    <a href="https://discord.com" target="_blank" class="dock-btn">DISCORD PANEL</a>
-                    <a href="https://github.com" target="_blank" class="dock-blank">GITHUB REPO</a>
-                    <a href="https://reddit.com" target="_blank" class="dock-btn">REDDIT MATRIX</a>
-                    <a href="https://youtube.com" target="_blank" class="dock-btn">YOUTUBE MAIN</a>
+                    <a href="https://discord.com" target="_blank" class="dock-btn">DISCORD GATEWAY</a>
+                    <a href="https://github.com" target="_blank" class="dock-btn">GITHUB DIRECTORY</a>
+                    <a href="https://reddit.com" target="_blank" class="dock-btn">STUDENT COMMUNITY</a>
+                    <a href="https://youtube.com" target="_blank" class="dock-btn">YOUTUBE MATRIX</a>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Tactical Mission Audio Synthesizer Element -->
     <audio id="alarm-sound" src="https://google.com" preload="auto"></audio>
 
     <script>
         let countdownInterval = null;
         let subjectsList = [];
         let selectedSubjectIndex = null;
+
+        function authenticateStudent() {
+            const user = document.getElementById('user-id').value.trim();
+            const pass = document.getElementById('user-pass').value.trim();
+
+            if (!user || !pass) return alert("Credentials missing.");
+            
+            // Set dynamic banner greeting
+            document.getElementById('welcome-banner').innerText = `WELCOME BACK, ${user.toUpperCase()} // STUDENT DIRECTORY ACTIVE`;
+            
+            // Fade out the overlay gate securely
+            document.getElementById('login-gate').style.display = 'none';
+            fetchProfile();
+        }
 
         async function fetchProfile() {
             try {
@@ -162,11 +206,6 @@
                 document.getElementById('pts').innerText = data.points;
                 renderHistory(data.history);
             } catch (err) { console.error("HUD Sync breakdown.", err); }
-        }
-
-        function changeTheme(colorCode) {
-            document.documentElement.style.setProperty('--accent-color', colorCode);
-            document.documentElement.style.setProperty('--accent-glow', colorCode + '1A');
         }
 
         function addSubjectToQueue() {
@@ -184,19 +223,19 @@
             subjectsList.forEach((sub, idx) => {
                 const div = document.createElement('div');
                 div.className = 'queue-item';
-                div.style.borderColor = selectedSubjectIndex === idx ? 'var(--accent-color)' : '#30363d';
+                div.style.borderColor = selectedSubjectIndex === idx ? 'var(--gurukul-primary)' : '#e5e7eb';
                 div.innerHTML = `
-                    <span>${sub}</span>
-                    <button onclick="selectSubject(${idx})" class="action-btn" style="padding:2px 8px; font-size:9px;">SELECT</button>
+                    <span style="font-weight:600;">📖 ${sub}</span>
+                    <button onclick="selectSubject(${idx})" class="action-btn" style="padding:4px 12px; font-size:10px;">ENGAGE</button>
                 `;
                 container.appendChild(div);
             });
         }
 
         function selectSubject(idx) {
-            if(countdownInterval) return; // Locked during countdown
+            if(countdownInterval) return;
             selectedSubjectIndex = idx;
-            document.getElementById('active-target-lbl').innerText = `Active: ${subjectsList[idx]}`;
+            document.getElementById('active-target-lbl').innerText = `Target: ${subjectsList[idx]}`;
             document.getElementById('push-btn').disabled = false;
             renderQueue();
         }
@@ -207,7 +246,7 @@
             const timerDisplay = document.getElementById('timer-display');
 
             pushBtn.disabled = true;
-            let totalSeconds = 25 * 60; // 25 Minute Gate Pipeline
+            let totalSeconds = 25 * 60; // 25 Min Countdown Gate Pipeline
             
             function updateTimerUI() {
                 const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
@@ -226,8 +265,7 @@
                     countdownInterval = null;
                     timerDisplay.innerText = "";
                     
-                    // Trigger Option B Audio Synthesizer
-                    document.getElementById('alarm-sound').play().catch(e => console.log("Audio block context reset required"));
+                    document.getElementById('alarm-sound').play().catch(e => console.log("Audio kickstart required"));
 
                     try {
                         const res = await fetch('/api/complete-session', {
@@ -238,7 +276,7 @@
                         if(data.success) {
                             fetchProfile();
                         }
-                    } catch (err) { console.error("Database pipeline execution error", err); }
+                    } catch (err) { console.error("Database tracking transmission error.", err); }
 
                     pushBtn.disabled = false;
                 }
@@ -267,14 +305,12 @@
             [...history].reverse().forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'timeline-card';
-                card.innerHTML = `<span>${item.action}</span><span style="color:#8b949e; font-size:10px;">${new Date(item.timestamp).toLocaleTimeString()}</span>`;
+                card.innerHTML = `<span>⚡ ${item.action}</span><span style="color:#6b7280; font-size:11px; font-weight:bold;">${new Date(item.timestamp).toLocaleTimeString()}</span>`;
                 timeline.appendChild(card);
             });
         }
-
-        window.onload = fetchProfile;
     </script>
 </body>
 </html>
 
-        
+
