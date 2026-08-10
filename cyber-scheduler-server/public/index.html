@@ -204,3 +204,17 @@
 
         function renderHistory(history) {
             const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+            // Make a copy of history before reversing so we don't accidentally reverse it over and over
+            [...history].reverse().forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'timeline-card';
+                card.innerHTML = `<span>${item.action}</span><span style="color:#8b949e; font-size:10px;">${new Date(item.timestamp).toLocaleTimeString()}</span>`;
+                timeline.appendChild(card);
+            });
+        }
+
+        window.onload = fetchProfile;
+    </script>
+</body>
+</html>
